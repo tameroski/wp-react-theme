@@ -1,3 +1,14 @@
+var Page = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<Content />
+				<Footer />
+			</div>
+		);
+	},
+});
+
 var App = React.createClass({
 	render: function() {
 		return (
@@ -98,7 +109,10 @@ var Footer = React.createClass({
 	}
 });
 
-ReactDOM.render(
-    <App />,
-    document.getElementById('content')
-);
+ReactDOM.render((
+	<ReactRouter.Router history={ReactRouter.browserHistory}>
+		<ReactRouter.Route path="/" component={App}>
+			<ReactRouter.Route path="/:pageSlug" component={Page}/>
+		</ReactRouter.Route>
+	</ReactRouter.Router>
+), document.getElementById('content'));

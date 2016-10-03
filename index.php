@@ -9,6 +9,8 @@
         <script src="<?php echo get_stylesheet_directory_uri(); ?>/build/react.min.js"></script>
         <script src="<?php echo get_stylesheet_directory_uri(); ?>/build/react-dom.min.js"></script>
         <script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+        <script src="https://unpkg.com/react-router/umd/ReactRouter.min.js"></script>
+        
         <script>
             var API_URI = "<?php echo home_url()?>/wp-json/wp/v2";
         </script>
