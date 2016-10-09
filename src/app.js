@@ -1,5 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
+import { Router, Route, browserHistory } from 'react-router'
 
 // Components
 import Header from './components/header.js';
@@ -11,7 +12,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			pages : []
+			pages : [],
 		}
 	}
 
@@ -29,9 +30,10 @@ class App extends React.Component {
 
 		// Getting Pages
 		var pages = [];
+		var content = '';
 		$.ajax({
             type: "GET",
-            url: API_URI+"/pages",
+            url: wp.root+"wp/v2/pages",
             success: function(response){
 
             	for (var i = response.length - 1; i >= 0; i--) {
@@ -46,11 +48,14 @@ class App extends React.Component {
             	}
 
 		        this.setState({
-		            pages: pages
+		            pages: pages,
 		        })
+
             }.bind(this)
         });
 	}
 }
 
-render(<App />, document.getElementById('content'));
+render(
+	<App />
+, document.getElementById('content'));
