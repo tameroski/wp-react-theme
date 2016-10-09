@@ -141,7 +141,17 @@
 		return App;
 	}(_react2.default.Component);
 	
-	(0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('content'));
+	//console.log(wp);
+	
+	(0, _reactDom.render)(_react2.default.createElement(
+		_reactRouter.Router,
+		{ history: _reactRouter.browserHistory },
+		_react2.default.createElement(
+			_reactRouter.Route,
+			{ path: wp.base_path, component: App },
+			_react2.default.createElement(_reactRouter.Route, { path: wp.base_path + ":pageSlug", component: App })
+		)
+	), document.getElementById('content'));
 
 /***/ },
 /* 1 */
@@ -27993,7 +28003,7 @@
 	      return _react2.default.createElement(
 	        'li',
 	        null,
-	        _react2.default.createElement('a', { href: this.props.item.slug, dangerouslySetInnerHTML: { __html: this.props.item.title } })
+	        _react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.slug, dangerouslySetInnerHTML: { __html: this.props.item.title } })
 	      );
 	    }
 	  }]);

@@ -21,7 +21,7 @@ class MenuItem extends React.Component {
     render(){
         return (
         	<li>
-        		<a href={this.props.item.slug} dangerouslySetInnerHTML={{__html: this.props.item.title}}></a>
+        		<Link to={wp.base_path + this.props.item.slug} dangerouslySetInnerHTML={{__html: this.props.item.title}}></Link>
         	</li>
         );
     }

@@ -5,3 +5,5 @@ Wordpress theme using React with WP Rest API v2. Build for my own learning purpo
 ## Installation
 
 `npm install`
+
+## WORK IN (slow) PROGRESS

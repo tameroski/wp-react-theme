@@ -56,6 +56,12 @@ class App extends React.Component {
 	}
 }
 
+//console.log(wp);
+
 render(
-	<App />
+	<Router history={browserHistory}>
+		<Route path={wp.base_path} component={App}>
+			<Route path={wp.base_path + ":pageSlug"} component={App} />
+		</Route>
+	</Router>
 , document.getElementById('content'));
