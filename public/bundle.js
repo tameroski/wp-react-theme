@@ -91,7 +91,7 @@
 			var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 	
 			_this.state = {
-				pages: []
+				routes: []
 			};
 			return _this;
 		}
@@ -102,8 +102,8 @@
 				return _react2.default.createElement(
 					'div',
 					null,
-					_react2.default.createElement(_header2.default, { menuItems: this.state.pages }),
-					_react2.default.createElement(_content2.default, null),
+					_react2.default.createElement(_header2.default, { menuItems: this.state.routes }),
+					this.props.children,
 					_react2.default.createElement(_footer2.default, null)
 				);
 			}
@@ -112,26 +112,25 @@
 			value: function componentDidMount() {
 	
 				// Getting Pages
-				var pages = [];
-				var content = '';
+				var routes = [];
+	
 				$.ajax({
 					type: "GET",
 					url: wp.root + "wp/v2/pages",
 					success: function (response) {
 	
 						for (var i = response.length - 1; i >= 0; i--) {
-							var page = response[i];
+							var route = response[i];
 	
-							pages.push({
-								slug: page.slug,
-								title: page.title.rendered,
-								content: page.content.rendered,
-								uri: page.link
+							routes.push({
+								id: route.id,
+								slug: route.slug,
+								title: route.title.rendered
 							});
 						}
 	
 						this.setState({
-							pages: pages
+							routes: routes
 						});
 					}.bind(this)
 				});
@@ -149,7 +148,7 @@
 		_react2.default.createElement(
 			_reactRouter.Route,
 			{ path: wp.base_path, component: App },
-			_react2.default.createElement(_reactRouter.Route, { path: wp.base_path + ":pageSlug", component: App })
+			_react2.default.createElement(_reactRouter.Route, { path: wp.base_path + ":postId", component: _content2.default })
 		)
 	), document.getElementById('content'));
 
@@ -27974,7 +27973,7 @@
 	    value: function render() {
 	
 	      var menuItems = this.props.menuItems.map(function (item) {
-	        return _react2.default.createElement(MenuItem, { key: item.slug, item: item });
+	        return _react2.default.createElement(MenuItem, { key: item.id, item: item });
 	      });
 	
 	      return _react2.default.createElement(
@@ -28003,7 +28002,7 @@
 	      return _react2.default.createElement(
 	        'li',
 	        null,
-	        _react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.slug, dangerouslySetInnerHTML: { __html: this.props.item.title } })
+	        _react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.id, dangerouslySetInnerHTML: { __html: this.props.item.title }, activeClassName: 'active' })
 	      );
 	    }
 	  }]);
@@ -28043,20 +28042,54 @@
 	var Content = function (_React$Component) {
 		_inherits(Content, _React$Component);
 	
-		function Content() {
+		function Content(props) {
 			_classCallCheck(this, Content);
 	
-			return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+			var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+	
+			_this.state = {
+				content: ''
+			};
+			return _this;
 		}
 	
 		_createClass(Content, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.getPage();
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
 					'main',
 					null,
-					'Content'
+					_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.content } })
 				);
+			}
+	
+			// Private methods
+	
+		}, {
+			key: 'getPage',
+			value: function getPage() {
+				console.log(this.props.params.postId);
+	
+				var postId = this.props.params.postId != null ? this.props.params.postId : '';
+	
+				if (postId != '') {
+					$.ajax({
+						type: "GET",
+						url: wp.root + "wp/v2/pages/" + postId,
+						success: function (response) {
+							console.log(response);
+	
+							this.setState({
+								content: 'Content ' + response.content.rendered
+							});
+						}.bind(this)
+					});
+				}
 			}
 		}]);
 	

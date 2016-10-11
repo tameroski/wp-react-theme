@@ -5,7 +5,7 @@ class Menu extends React.Component {
 	render(){
 		
 		var menuItems = this.props.menuItems.map(function(item) {
-            return <MenuItem key={item.slug} item={item} />
+            return <MenuItem key={item.id} item={item} />
         });
 
 		return (
@@ -21,7 +21,7 @@ class MenuItem extends React.Component {
     render(){
         return (
         	<li>
-        		<Link to={wp.base_path + this.props.item.slug} dangerouslySetInnerHTML={{__html: this.props.item.title}}></Link>
+        		<Link to={wp.base_path + this.props.item.id} dangerouslySetInnerHTML={{__html: this.props.item.title}} activeClassName="active"></Link>
         	</li>
         );
     }

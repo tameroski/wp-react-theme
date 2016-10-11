@@ -12,15 +12,15 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			pages : [],
+			routes : [],
 		}
 	}
 
 	render () {
 		return (
 			<div>
-				<Header menuItems={this.state.pages}/>
-				<Content />
+				<Header menuItems={this.state.routes}/>
+				{this.props.children}
 				<Footer />
 			</div>
 		);
@@ -29,26 +29,25 @@ class App extends React.Component {
 	componentDidMount() {
 
 		// Getting Pages
-		var pages = [];
-		var content = '';
+		var routes = [];
+
 		$.ajax({
             type: "GET",
             url: wp.root+"wp/v2/pages",
             success: function(response){
 
             	for (var i = response.length - 1; i >= 0; i--) {
-            		var page = response[i];
+            		var route = response[i];
 
-            		pages.push({
-            			slug: page.slug,
-            			title: page.title.rendered,
-            			content: page.content.rendered,
-            			uri: page.link,
+            		routes.push({
+            			id: route.id,
+            			slug: route.slug,
+            			title: route.title.rendered,
             		});
             	}
 
 		        this.setState({
-		            pages: pages,
+		            routes: routes
 		        })
 
             }.bind(this)
@@ -61,7 +60,7 @@ class App extends React.Component {
 render(
 	<Router history={browserHistory}>
 		<Route path={wp.base_path} component={App}>
-			<Route path={wp.base_path + ":pageSlug"} component={App} />
+			<Route path={wp.base_path + ":postId"} component={Content} />
 		</Route>
 	</Router>
 , document.getElementById('content'));
