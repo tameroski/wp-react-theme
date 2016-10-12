@@ -10,7 +10,7 @@ Wordpress theme using React with WP Rest API v2. Build for my own learning purpo
 
 ### TODO
 
-* Changing page title according to content
 * Using slug instead of ids in URLs
 * Listing posts
+* Isomorphic 
 * A lot more ...
