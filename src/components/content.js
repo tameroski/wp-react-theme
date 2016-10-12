@@ -6,6 +6,7 @@ class Content extends React.Component {
 		super(props);
 		this.state = {
 			content : '', 
+			title : ''
 		}
 	}
 
@@ -22,6 +23,7 @@ class Content extends React.Component {
 	render(){
 		return (
 			<main>
+				<h1 dangerouslySetInnerHTML={{__html: this.state.title}}></h1>
 				<div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
 			</main>
 		);
@@ -37,13 +39,15 @@ class Content extends React.Component {
 	            success: function(response){
 
 			        this.setState({
-			            content : response.content.rendered
+			            content : response.content.rendered,
+			            title : response.title.rendered
 			        })
 
 	            }.bind(this),
 	            error: function(){
 					this.setState({
-			            content : 'Page not found'
+			            content : 'Page not found',
+			            title : 'Page not found'
 			        })
 	            }.bind(this),
 	        });
