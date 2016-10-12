@@ -11,6 +11,7 @@ Wordpress theme using React with WP Rest API v2. Build for my own learning purpo
 ### TODO
 
 * Using slug instead of ids in URLs
+* Nice page transitions
 * Listing posts
 * Isomorphic 
 * A lot more ...
