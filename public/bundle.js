@@ -27919,9 +27919,21 @@
 			value: function render() {
 				return _react2.default.createElement(
 					'header',
-					null,
-					'Header',
-					_react2.default.createElement(_menu2.default, { menuItems: this.props.menuItems })
+					{ className: 'navbar navbar-inverse' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'container' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'navbar-header' },
+							_react2.default.createElement(
+								'span',
+								{ className: 'navbar-brand' },
+								'Header'
+							)
+						),
+						_react2.default.createElement(_menu2.default, { menuItems: this.props.menuItems })
+					)
 				);
 			}
 		}]);
@@ -27941,7 +27953,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -27961,54 +27973,58 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var Menu = function (_React$Component) {
-	  _inherits(Menu, _React$Component);
+		_inherits(Menu, _React$Component);
 	
-	  function Menu() {
-	    _classCallCheck(this, Menu);
+		function Menu() {
+			_classCallCheck(this, Menu);
 	
-	    return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).apply(this, arguments));
-	  }
+			return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).apply(this, arguments));
+		}
 	
-	  _createClass(Menu, [{
-	    key: 'render',
-	    value: function render() {
+		_createClass(Menu, [{
+			key: 'render',
+			value: function render() {
 	
-	      var menuItems = this.props.menuItems.map(function (item) {
-	        return _react2.default.createElement(MenuItem, { key: item.id, item: item });
-	      });
+				var menuItems = this.props.menuItems.map(function (item) {
+					return _react2.default.createElement(MenuItem, { key: item.id, item: item });
+				});
 	
-	      return _react2.default.createElement(
-	        'nav',
-	        null,
-	        menuItems
-	      );
-	    }
-	  }]);
+				return _react2.default.createElement(
+					'nav',
+					{ className: 'navbar-right' },
+					_react2.default.createElement(
+						'ul',
+						{ className: 'nav navbar-nav' },
+						menuItems
+					)
+				);
+			}
+		}]);
 	
-	  return Menu;
+		return Menu;
 	}(_react2.default.Component);
 	
 	var MenuItem = function (_React$Component2) {
-	  _inherits(MenuItem, _React$Component2);
+		_inherits(MenuItem, _React$Component2);
 	
-	  function MenuItem() {
-	    _classCallCheck(this, MenuItem);
+		function MenuItem() {
+			_classCallCheck(this, MenuItem);
 	
-	    return _possibleConstructorReturn(this, (MenuItem.__proto__ || Object.getPrototypeOf(MenuItem)).apply(this, arguments));
-	  }
+			return _possibleConstructorReturn(this, (MenuItem.__proto__ || Object.getPrototypeOf(MenuItem)).apply(this, arguments));
+		}
 	
-	  _createClass(MenuItem, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'li',
-	        null,
-	        _react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.id, dangerouslySetInnerHTML: { __html: this.props.item.title }, activeClassName: 'active' })
-	      );
-	    }
-	  }]);
+		_createClass(MenuItem, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'li',
+					null,
+					_react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.id, dangerouslySetInnerHTML: { __html: this.props.item.title }, activeClassName: 'active' })
+				);
+			}
+		}]);
 	
-	  return MenuItem;
+		return MenuItem;
 	}(_react2.default.Component);
 	
 	exports.default = Menu;
@@ -28074,12 +28090,13 @@
 		}, {
 			key: 'render',
 			value: function render() {
+	
 				return _react2.default.createElement(
 					_reactDocumentTitle2.default,
 					{ title: this.state.title },
 					_react2.default.createElement(
 						'main',
-						null,
+						{ className: 'container' },
 						_react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: this.state.title } }),
 						_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.state.content } })
 					)
@@ -28126,7 +28143,7 @@
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -28156,12 +28173,12 @@
 		}
 	
 		_createClass(Footer, [{
-			key: 'render',
+			key: "render",
 			value: function render() {
 				return _react2.default.createElement(
-					'footer',
-					null,
-					'Footer'
+					"footer",
+					{ className: "container text-center" },
+					"Footer - \xA9 Tameroski"
 				);
 			}
 		}]);

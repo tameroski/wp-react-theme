@@ -9,8 +9,10 @@ class Menu extends React.Component {
         });
 
 		return (
-			<nav>
-				{menuItems}
+			<nav className="navbar-right">
+				<ul className="nav navbar-nav">
+					{menuItems}
+				</ul>
 			</nav>
 		);
 	}

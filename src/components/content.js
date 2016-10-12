@@ -22,9 +22,10 @@ class Content extends React.Component {
 	}
 
 	render(){
+
 		return (
 			<DocumentTitle title={this.state.title}>
-				<main>
+				<main className="container">
 					<h1 dangerouslySetInnerHTML={{__html: this.state.title}}></h1>
 					<div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
 				</main>
