@@ -148,6 +148,7 @@
 		_react2.default.createElement(
 			_reactRouter.Route,
 			{ path: wp.base_path, component: App },
+			_react2.default.createElement(_reactRouter.IndexRedirect, { to: wp.base_path + "2" }),
 			_react2.default.createElement(_reactRouter.Route, { path: wp.base_path + ":postId", component: _content2.default })
 		)
 	), document.getElementById('content'));
@@ -28054,9 +28055,16 @@
 		}
 	
 		_createClass(Content, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.getPage();
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				this.getPage(this.props.params.postId);
+			}
+		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextProps) {
+				var postId = nextProps.params.postId != null ? nextProps.params.postId : '';
+	
+				this.getPage(postId);
 			}
 		}, {
 			key: 'render',
@@ -28064,7 +28072,7 @@
 				return _react2.default.createElement(
 					'main',
 					null,
-					_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.content } })
+					_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.state.content } })
 				);
 			}
 	
@@ -28072,20 +28080,21 @@
 	
 		}, {
 			key: 'getPage',
-			value: function getPage() {
-				console.log(this.props.params.postId);
+			value: function getPage(id) {
 	
-				var postId = this.props.params.postId != null ? this.props.params.postId : '';
-	
-				if (postId != '') {
+				if (id != '') {
 					$.ajax({
 						type: "GET",
-						url: wp.root + "wp/v2/pages/" + postId,
+						url: wp.root + "wp/v2/pages/" + id,
 						success: function (response) {
-							console.log(response);
 	
 							this.setState({
-								content: 'Content ' + response.content.rendered
+								content: response.content.rendered
+							});
+						}.bind(this),
+						error: function () {
+							this.setState({
+								content: 'Page not found'
 							});
 						}.bind(this)
 					});

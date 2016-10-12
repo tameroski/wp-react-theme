@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, IndexRedirect, browserHistory } from 'react-router'
 
 // Components
 import Header from './components/header.js';
@@ -60,6 +60,7 @@ class App extends React.Component {
 render(
 	<Router history={browserHistory}>
 		<Route path={wp.base_path} component={App}>
+			<IndexRedirect to={wp.base_path + "2"} />
 			<Route path={wp.base_path + ":postId"} component={Content} />
 		</Route>
 	</Router>

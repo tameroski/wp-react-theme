@@ -9,36 +9,43 @@ class Content extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		this.getPage()
+	componentWillMount() {
+		this.getPage(this.props.params.postId)
+	}
+
+	componentWillReceiveProps(nextProps){
+		var postId = nextProps.params.postId != null ? nextProps.params.postId : '';
+
+		this.getPage(postId)
 	}
 
 	render(){
 		return (
 			<main>
-				<div  dangerouslySetInnerHTML={{__html: this.props.content}}></div>
+				<div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
 			</main>
 		);
 	}
 
 	// Private methods
-	getPage(){
-		console.log(this.props.params.postId);
+	getPage(id){
 
-		var postId = this.props.params.postId != null ? this.props.params.postId : '';
-
-		if (postId != ''){
+		if (id != ''){
 			$.ajax({
 	            type: "GET",
-	            url: wp.root+"wp/v2/pages/"+postId,
+	            url: wp.root+"wp/v2/pages/"+id,
 	            success: function(response){
-	            	console.log(response)
 
 			        this.setState({
-			            content : 'Content ' + response.content.rendered
+			            content : response.content.rendered
 			        })
 
-	            }.bind(this)
+	            }.bind(this),
+	            error: function(){
+					this.setState({
+			            content : 'Page not found'
+			        })
+	            }.bind(this),
 	        });
 		}
         
