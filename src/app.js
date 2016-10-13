@@ -1,6 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { RouteTransition } from 'react-router-transition'
 
 // Components
 import Header from './components/header.js'
@@ -43,7 +44,14 @@ class App extends React.Component {
 		return (
 			<div>
 				<Header menuItems={this.state.routes}/>
-				{this.props.children}
+				<RouteTransition
+					pathname={this.props.location.pathname}
+					atEnter={{ opacity: 0 }}
+					atLeave={{ opacity: 0 }}
+					atActive={{ opacity: 1 }}
+				>
+					{this.props.children}
+				</RouteTransition>
 				<Footer />
 			</div>
 		);
@@ -53,8 +61,8 @@ class App extends React.Component {
 render(
 	<Router history={browserHistory}>
 		<Route path={wp.base_path} component={App}>
-			<IndexRoute component={Home} />
-			<Route path={wp.base_path + ":postSlug"} component={Page} />
+			<IndexRoute component={Home}/>
+			<Route path={wp.base_path + ":postSlug"} component={Page}/>
 		</Route>
 	</Router>
 , document.getElementById('content'));

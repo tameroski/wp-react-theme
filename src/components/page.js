@@ -25,9 +25,11 @@ class Page extends React.Component {
 
 		return (
 			<DocumentTitle title={this.state.title}>
-				<main className="container">
-					<h1 dangerouslySetInnerHTML={{__html: this.state.title}}></h1>
-					<div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
+				<main>
+					<section className="container">
+						<h1 dangerouslySetInnerHTML={{__html: this.state.title}}></h1>
+						<div dangerouslySetInnerHTML={{__html: this.state.content}}></div>
+					</section>
 				</main>
 			</DocumentTitle>
 		);

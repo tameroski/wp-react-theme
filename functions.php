@@ -7,6 +7,9 @@ function react_theme_scripts() {
 	$base_url  = esc_url_raw( home_url() );
 	$base_path = rtrim( parse_url( $base_url, PHP_URL_PATH ), '/' );
 
+	// Theme style
+	wp_enqueue_style( 'react-theme-style', get_stylesheet_uri(), array( ) );
+
 	// Enqueuing bundle.js
 	wp_enqueue_script( 'react-theme-js', get_template_directory_uri() . '/public/bundle.js', array(), '1.0.0', true );
 

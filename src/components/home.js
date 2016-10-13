@@ -7,9 +7,11 @@ class Home extends React.Component {
 
 		return (
 			<DocumentTitle title="WP React Theme">
-				<main className="container">
-					<h1>Welcome</h1>
-					<div>Homepage content</div>
+				<main>
+					<section className="container">
+						<h1>Welcome</h1>
+						<div>Homepage content</div>
+					</section>
 				</main>
 			</DocumentTitle>
 		);

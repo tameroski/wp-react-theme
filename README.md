@@ -20,7 +20,6 @@ Build for production
 
 ### TODO
 
-* Nice page transitions
 * Listing posts
 * Isomorphic 
 * A lot more ...
