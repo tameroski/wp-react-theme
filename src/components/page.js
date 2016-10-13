@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 import DocumentTitle from 'react-document-title'
 
-class Content extends React.Component {
+class Page extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -12,13 +12,13 @@ class Content extends React.Component {
 	}
 
 	componentWillMount() {
-		this.getPage(this.props.params.postId)
+		this.getPage(this.props.params.postSlug)
 	}
 
 	componentWillReceiveProps(nextProps){
-		var postId = nextProps.params.postId != null ? nextProps.params.postId : '';
+		var postSlug = nextProps.params.postSlug != null ? nextProps.params.postSlug : ''
 
-		this.getPage(postId)
+		this.getPage(postSlug)
 	}
 
 	render(){
@@ -34,9 +34,18 @@ class Content extends React.Component {
 	}
 
 	// Private methods
-	getPage(id){
+	getPage(slug){
 
-		if (id != ''){
+		if (slug != ''){
+
+			var id = 0
+			for (var i = wp.routes.length - 1; i >= 0; i--) {
+				if (wp.routes[i].slug == slug){
+					id = wp.routes[i].id
+					break
+				}
+			}
+
 			$.ajax({
 	            type: "GET",
 	            url: wp.root+"wp/v2/pages/"+id,
@@ -60,4 +69,4 @@ class Content extends React.Component {
 	}
 }
 
-export default Content;
+export default Page;

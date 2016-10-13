@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { Link } from 'react-router'
 
 class Menu extends React.Component {
@@ -23,7 +23,7 @@ class MenuItem extends React.Component {
     render(){
         return (
         	<li>
-        		<Link to={wp.base_path + this.props.item.id} dangerouslySetInnerHTML={{__html: this.props.item.title}} activeClassName="active"></Link>
+        		<Link to={wp.base_path + this.props.item.slug} dangerouslySetInnerHTML={{__html: this.props.item.title}} activeClassName="active"></Link>
         	</li>
         );
     }

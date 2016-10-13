@@ -38,6 +38,7 @@ function react_theme_routes() {
 				'id'   => get_the_ID(),
 				'type' => get_post_type(),
 				'slug' => basename( get_permalink() ),
+				'title' => get_the_title(),
 				'template' => get_page_template_slug( get_the_ID() ),
 			);
 		}

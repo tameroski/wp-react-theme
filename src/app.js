@@ -1,18 +1,41 @@
-import React from 'react';
-import {render} from 'react-dom';
-import { Router, Route, IndexRedirect, browserHistory } from 'react-router'
+import React from 'react'
+import {render} from 'react-dom'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 // Components
-import Header from './components/header.js';
-import Content from './components/content.js';
-import Footer from './components/footer.js';
+import Header from './components/header.js'
+import Home from './components/home.js'
+import Page from './components/page.js'
+import Footer from './components/footer.js'
 
 class App extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super(props)
+
 		this.state = {
-			routes : [],
+			routes : []
+		}
+	}
+
+	componentWillMount(){
+
+		// Routes to pages from wp
+		var routes = []
+		for (var i = wp.routes.length - 1; i >= 0; i--) {
+    		var route = wp.routes[i]
+
+    		if (route.type == 'page'){
+	    		routes.push({
+	    			id: route.id,
+	    			slug: route.slug,
+	    			title: route.title,
+	    		});
+    		}
+    	}
+
+    	this.state = {
+			routes : routes
 		}
 	}
 
@@ -25,43 +48,13 @@ class App extends React.Component {
 			</div>
 		);
 	}
-
-	componentDidMount() {
-
-		// Getting Pages
-		var routes = [];
-
-		$.ajax({
-            type: "GET",
-            url: wp.root+"wp/v2/pages",
-            success: function(response){
-
-            	for (var i = response.length - 1; i >= 0; i--) {
-            		var route = response[i];
-
-            		routes.push({
-            			id: route.id,
-            			slug: route.slug,
-            			title: route.title.rendered,
-            		});
-            	}
-
-		        this.setState({
-		            routes: routes
-		        })
-
-            }.bind(this)
-        });
-	}
 }
-
-//console.log(wp);
 
 render(
 	<Router history={browserHistory}>
 		<Route path={wp.base_path} component={App}>
-			<IndexRedirect to={wp.base_path + "2"} />
-			<Route path={wp.base_path + ":postId"} component={Content} />
+			<IndexRoute component={Home} />
+			<Route path={wp.base_path + ":postSlug"} component={Page} />
 		</Route>
 	</Router>
 , document.getElementById('content'));

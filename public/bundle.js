@@ -63,11 +63,15 @@
 	
 	var _header2 = _interopRequireDefault(_header);
 	
-	var _content = __webpack_require__(/*! ./components/content.js */ 237);
+	var _home = __webpack_require__(/*! ./components/home.js */ 243);
 	
-	var _content2 = _interopRequireDefault(_content);
+	var _home2 = _interopRequireDefault(_home);
 	
-	var _footer = __webpack_require__(/*! ./components/footer.js */ 238);
+	var _page = __webpack_require__(/*! ./components/page.js */ 237);
+	
+	var _page2 = _interopRequireDefault(_page);
+	
+	var _footer = __webpack_require__(/*! ./components/footer.js */ 242);
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
@@ -97,6 +101,28 @@
 		}
 	
 		_createClass(App, [{
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+	
+				// Routes to pages from wp
+				var routes = [];
+				for (var i = wp.routes.length - 1; i >= 0; i--) {
+					var route = wp.routes[i];
+	
+					if (route.type == 'page') {
+						routes.push({
+							id: route.id,
+							slug: route.slug,
+							title: route.title
+						});
+					}
+				}
+	
+				this.state = {
+					routes: routes
+				};
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
@@ -107,40 +133,10 @@
 					_react2.default.createElement(_footer2.default, null)
 				);
 			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-	
-				// Getting Pages
-				var routes = [];
-	
-				$.ajax({
-					type: "GET",
-					url: wp.root + "wp/v2/pages",
-					success: function (response) {
-	
-						for (var i = response.length - 1; i >= 0; i--) {
-							var route = response[i];
-	
-							routes.push({
-								id: route.id,
-								slug: route.slug,
-								title: route.title.rendered
-							});
-						}
-	
-						this.setState({
-							routes: routes
-						});
-					}.bind(this)
-				});
-			}
 		}]);
 	
 		return App;
 	}(_react2.default.Component);
-	
-	//console.log(wp);
 	
 	(0, _reactDom.render)(_react2.default.createElement(
 		_reactRouter.Router,
@@ -148,8 +144,8 @@
 		_react2.default.createElement(
 			_reactRouter.Route,
 			{ path: wp.base_path, component: App },
-			_react2.default.createElement(_reactRouter.IndexRedirect, { to: wp.base_path + "2" }),
-			_react2.default.createElement(_reactRouter.Route, { path: wp.base_path + ":postId", component: _content2.default })
+			_react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
+			_react2.default.createElement(_reactRouter.Route, { path: wp.base_path + ":postSlug", component: _page2.default })
 		)
 	), document.getElementById('content'));
 
@@ -27893,6 +27889,8 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	
 	var _menu = __webpack_require__(/*! ./menu.js */ 236);
 	
 	var _menu2 = _interopRequireDefault(_menu);
@@ -27929,7 +27927,11 @@
 							_react2.default.createElement(
 								'span',
 								{ className: 'navbar-brand' },
-								'Header'
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: wp.base_path },
+									'Logo'
+								)
 							)
 						),
 						_react2.default.createElement(_menu2.default, { menuItems: this.props.menuItems })
@@ -28019,7 +28021,7 @@
 				return _react2.default.createElement(
 					'li',
 					null,
-					_react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.id, dangerouslySetInnerHTML: { __html: this.props.item.title }, activeClassName: 'active' })
+					_react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.slug, dangerouslySetInnerHTML: { __html: this.props.item.title }, activeClassName: 'active' })
 				);
 			}
 		}]);
@@ -28031,9 +28033,9 @@
 
 /***/ },
 /* 237 */
-/*!***********************************!*\
-  !*** ./src/components/content.js ***!
-  \***********************************/
+/*!********************************!*\
+  !*** ./src/components/page.js ***!
+  \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28048,7 +28050,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDocumentTitle = __webpack_require__(/*! react-document-title */ 240);
+	var _reactDocumentTitle = __webpack_require__(/*! react-document-title */ 238);
 	
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 	
@@ -28060,13 +28062,13 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Content = function (_React$Component) {
-		_inherits(Content, _React$Component);
+	var Page = function (_React$Component) {
+		_inherits(Page, _React$Component);
 	
-		function Content(props) {
-			_classCallCheck(this, Content);
+		function Page(props) {
+			_classCallCheck(this, Page);
 	
-			var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+			var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 	
 			_this.state = {
 				content: '',
@@ -28075,17 +28077,17 @@
 			return _this;
 		}
 	
-		_createClass(Content, [{
+		_createClass(Page, [{
 			key: 'componentWillMount',
 			value: function componentWillMount() {
-				this.getPage(this.props.params.postId);
+				this.getPage(this.props.params.postSlug);
 			}
 		}, {
 			key: 'componentWillReceiveProps',
 			value: function componentWillReceiveProps(nextProps) {
-				var postId = nextProps.params.postId != null ? nextProps.params.postId : '';
+				var postSlug = nextProps.params.postSlug != null ? nextProps.params.postSlug : '';
 	
-				this.getPage(postId);
+				this.getPage(postSlug);
 			}
 		}, {
 			key: 'render',
@@ -28107,9 +28109,18 @@
 	
 		}, {
 			key: 'getPage',
-			value: function getPage(id) {
+			value: function getPage(slug) {
 	
-				if (id != '') {
+				if (slug != '') {
+	
+					var id = 0;
+					for (var i = wp.routes.length - 1; i >= 0; i--) {
+						if (wp.routes[i].slug == slug) {
+							id = wp.routes[i].id;
+							break;
+						}
+					}
+	
 					$.ajax({
 						type: "GET",
 						url: wp.root + "wp/v2/pages/" + id,
@@ -28131,66 +28142,13 @@
 			}
 		}]);
 	
-		return Content;
+		return Page;
 	}(_react2.default.Component);
 	
-	exports.default = Content;
+	exports.default = Page;
 
 /***/ },
 /* 238 */
-/*!**********************************!*\
-  !*** ./src/components/footer.js ***!
-  \**********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Footer = function (_React$Component) {
-		_inherits(Footer, _React$Component);
-	
-		function Footer() {
-			_classCallCheck(this, Footer);
-	
-			return _possibleConstructorReturn(this, (Footer.__proto__ || Object.getPrototypeOf(Footer)).apply(this, arguments));
-		}
-	
-		_createClass(Footer, [{
-			key: "render",
-			value: function render() {
-				return _react2.default.createElement(
-					"footer",
-					{ className: "container text-center" },
-					"Footer - \xA9 Tameroski"
-				);
-			}
-		}]);
-	
-		return Footer;
-	}(_react2.default.Component);
-	
-	exports.default = Footer;
-
-/***/ },
-/* 239 */,
-/* 240 */
 /*!*****************************************!*\
   !*** ./~/react-document-title/index.js ***!
   \*****************************************/
@@ -28199,7 +28157,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(/*! react */ 1),
-	    withSideEffect = __webpack_require__(/*! react-side-effect */ 241);
+	    withSideEffect = __webpack_require__(/*! react-side-effect */ 239);
 	
 	function reducePropsToState(propsList) {
 	  var innermostProps = propsList[propsList.length - 1];
@@ -28238,7 +28196,7 @@
 
 
 /***/ },
-/* 241 */
+/* 239 */
 /*!******************************************!*\
   !*** ./~/react-side-effect/lib/index.js ***!
   \******************************************/
@@ -28258,11 +28216,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _fbjsLibExecutionEnvironment = __webpack_require__(/*! fbjs/lib/ExecutionEnvironment */ 242);
+	var _fbjsLibExecutionEnvironment = __webpack_require__(/*! fbjs/lib/ExecutionEnvironment */ 240);
 	
 	var _fbjsLibExecutionEnvironment2 = _interopRequireDefault(_fbjsLibExecutionEnvironment);
 	
-	var _fbjsLibShallowEqual = __webpack_require__(/*! fbjs/lib/shallowEqual */ 243);
+	var _fbjsLibShallowEqual = __webpack_require__(/*! fbjs/lib/shallowEqual */ 241);
 	
 	var _fbjsLibShallowEqual2 = _interopRequireDefault(_fbjsLibShallowEqual);
 	
@@ -28370,7 +28328,7 @@
 	};
 
 /***/ },
-/* 242 */
+/* 240 */
 /*!****************************************************************!*\
   !*** ./~/react-side-effect/~/fbjs/lib/ExecutionEnvironment.js ***!
   \****************************************************************/
@@ -28414,7 +28372,7 @@
 	module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 243 */
+/* 241 */
 /*!********************************************************!*\
   !*** ./~/react-side-effect/~/fbjs/lib/shallowEqual.js ***!
   \********************************************************/
@@ -28470,6 +28428,128 @@
 	}
 	
 	module.exports = shallowEqual;
+
+/***/ },
+/* 242 */
+/*!**********************************!*\
+  !*** ./src/components/footer.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Footer = function (_React$Component) {
+		_inherits(Footer, _React$Component);
+	
+		function Footer() {
+			_classCallCheck(this, Footer);
+	
+			return _possibleConstructorReturn(this, (Footer.__proto__ || Object.getPrototypeOf(Footer)).apply(this, arguments));
+		}
+	
+		_createClass(Footer, [{
+			key: "render",
+			value: function render() {
+				return _react2.default.createElement(
+					"footer",
+					{ className: "container text-center" },
+					"Footer - \xA9 Tameroski"
+				);
+			}
+		}]);
+	
+		return Footer;
+	}(_react2.default.Component);
+	
+	exports.default = Footer;
+
+/***/ },
+/* 243 */
+/*!********************************!*\
+  !*** ./src/components/home.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDocumentTitle = __webpack_require__(/*! react-document-title */ 238);
+	
+	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Home = function (_React$Component) {
+		_inherits(Home, _React$Component);
+	
+		function Home() {
+			_classCallCheck(this, Home);
+	
+			return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+		}
+	
+		_createClass(Home, [{
+			key: 'render',
+			value: function render() {
+	
+				return _react2.default.createElement(
+					_reactDocumentTitle2.default,
+					{ title: 'WP React Theme' },
+					_react2.default.createElement(
+						'main',
+						{ className: 'container' },
+						_react2.default.createElement(
+							'h1',
+							null,
+							'Welcome'
+						),
+						_react2.default.createElement(
+							'div',
+							null,
+							'Homepage content'
+						)
+					)
+				);
+			}
+		}]);
+	
+		return Home;
+	}(_react2.default.Component);
+	
+	exports.default = Home;
 
 /***/ }
 /******/ ]);
