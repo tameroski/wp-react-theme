@@ -40,6 +40,7 @@ class Page extends React.Component {
 
 		if (slug != ''){
 
+			// Looking for id within routes
 			var id = 0
 			for (var i = wp.routes.length - 1; i >= 0; i--) {
 				if (wp.routes[i].slug == slug){

@@ -1,7 +1,6 @@
 import React from 'react'
 import {render} from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-import { RouteTransition } from 'react-router-transition'
 
 // Components
 import Header from './components/header.js'
@@ -44,15 +43,8 @@ class App extends React.Component {
 		return (
 			<div>
 				<Header menuItems={this.state.routes}/>
-				<RouteTransition
-					pathname={this.props.location.pathname}
-					atEnter={{ opacity: 0 }}
-					atLeave={{ opacity: 0 }}
-					atActive={{ opacity: 1 }}
-				>
 					{this.props.children}
-				</RouteTransition>
-				<Footer />
+				<Footer/>
 			</div>
 		);
 	}

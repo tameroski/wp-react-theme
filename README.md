@@ -20,6 +20,7 @@ Build for production
 
 ### TODO
 
+* Add a loading screen between pages
 * Listing posts
 * Isomorphic 
 * A lot more ...
