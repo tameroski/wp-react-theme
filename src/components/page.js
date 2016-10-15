@@ -1,5 +1,6 @@
 import React from 'react'
 import DocumentTitle from 'react-document-title'
+import $ from 'jquery'
 
 class Page extends React.Component {
 
@@ -19,6 +20,12 @@ class Page extends React.Component {
 		var postSlug = nextProps.params.postSlug != null ? nextProps.params.postSlug : ''
 
 		this.getPage(postSlug)
+	}
+
+	componentDidMount(){
+	}
+
+	componentDidUpdate(){
 	}
 
 	render(){
