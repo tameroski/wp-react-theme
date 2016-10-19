@@ -1,12 +1,9 @@
 import React from 'react'
-import {render} from 'react-dom'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import {connect} from 'react-redux'
 
 // Components
-import Header from './components/header.js'
-import Home from './components/home.js'
-import Page from './components/page.js'
-import Footer from './components/footer.js'
+import Header from '../components/header.js'
+import Footer from '../components/footer.js'
 
 class App extends React.Component {
 
@@ -42,6 +39,7 @@ class App extends React.Component {
 	render () {
 		return (
 			<div>
+				<div>{this.props.page.loading}</div>
 				<Header menuItems={this.state.routes}/>
 					{this.props.children}
 				<Footer/>
@@ -50,11 +48,17 @@ class App extends React.Component {
 	}
 }
 
-render(
-	<Router history={browserHistory}>
-		<Route path={wp.base_path} component={App}>
-			<IndexRoute component={Home}/>
-			<Route path={wp.base_path + ":postSlug"} component={Page}/>
-		</Route>
-	</Router>
-, document.getElementById('content'));
+const mapStateToProps = function(state){
+	return {
+		page: state.page
+	}
+}
+const mapDispatchToProps = function(dispatch){
+	return {
+		fetchPage: function(slug){
+			dispatch(fetchPage(slug));
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
