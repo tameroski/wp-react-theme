@@ -59,30 +59,34 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 235);
 	
-	var _app = __webpack_require__(/*! ./containers/app.js */ 257);
+	var _reactRouterRedux = __webpack_require__(/*! react-router-redux */ 257);
+	
+	var _app = __webpack_require__(/*! ./containers/app */ 262);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _store = __webpack_require__(/*! ./redux/store.js */ 261);
+	var _store = __webpack_require__(/*! ./redux/store */ 266);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _home = __webpack_require__(/*! ./components/home.js */ 270);
+	var _home = __webpack_require__(/*! ./components/home */ 277);
 	
 	var _home2 = _interopRequireDefault(_home);
 	
-	var _page = __webpack_require__(/*! ./components/page.js */ 275);
+	var _page = __webpack_require__(/*! ./components/page */ 282);
 	
 	var _page2 = _interopRequireDefault(_page);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, _store2.default);
 	
 	(0, _reactDom.render)(_react2.default.createElement(
 		_reactRedux.Provider,
 		{ store: _store2.default },
 		_react2.default.createElement(
 			_reactRouter.Router,
-			{ history: _reactRouter.browserHistory },
+			{ history: history },
 			_react2.default.createElement(
 				_reactRouter.Route,
 				{ path: wp.base_path, component: _app2.default },
@@ -29365,6 +29369,383 @@
 
 /***/ },
 /* 257 */
+/*!*******************************************!*\
+  !*** ./~/react-router-redux/lib/index.js ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.routerMiddleware = exports.routerActions = exports.goForward = exports.goBack = exports.go = exports.replace = exports.push = exports.CALL_HISTORY_METHOD = exports.routerReducer = exports.LOCATION_CHANGE = exports.syncHistoryWithStore = undefined;
+	
+	var _reducer = __webpack_require__(/*! ./reducer */ 258);
+	
+	Object.defineProperty(exports, 'LOCATION_CHANGE', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reducer.LOCATION_CHANGE;
+	  }
+	});
+	Object.defineProperty(exports, 'routerReducer', {
+	  enumerable: true,
+	  get: function get() {
+	    return _reducer.routerReducer;
+	  }
+	});
+	
+	var _actions = __webpack_require__(/*! ./actions */ 259);
+	
+	Object.defineProperty(exports, 'CALL_HISTORY_METHOD', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.CALL_HISTORY_METHOD;
+	  }
+	});
+	Object.defineProperty(exports, 'push', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.push;
+	  }
+	});
+	Object.defineProperty(exports, 'replace', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.replace;
+	  }
+	});
+	Object.defineProperty(exports, 'go', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.go;
+	  }
+	});
+	Object.defineProperty(exports, 'goBack', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.goBack;
+	  }
+	});
+	Object.defineProperty(exports, 'goForward', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.goForward;
+	  }
+	});
+	Object.defineProperty(exports, 'routerActions', {
+	  enumerable: true,
+	  get: function get() {
+	    return _actions.routerActions;
+	  }
+	});
+	
+	var _sync = __webpack_require__(/*! ./sync */ 260);
+	
+	var _sync2 = _interopRequireDefault(_sync);
+	
+	var _middleware = __webpack_require__(/*! ./middleware */ 261);
+	
+	var _middleware2 = _interopRequireDefault(_middleware);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	exports.syncHistoryWithStore = _sync2['default'];
+	exports.routerMiddleware = _middleware2['default'];
+
+/***/ },
+/* 258 */
+/*!*********************************************!*\
+  !*** ./~/react-router-redux/lib/reducer.js ***!
+  \*********************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.routerReducer = routerReducer;
+	/**
+	 * This action type will be dispatched when your history
+	 * receives a location change.
+	 */
+	var LOCATION_CHANGE = exports.LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
+	
+	var initialState = {
+	  locationBeforeTransitions: null
+	};
+	
+	/**
+	 * This reducer will update the state with the most recent location history
+	 * has transitioned to. This may not be in sync with the router, particularly
+	 * if you have asynchronously-loaded routes, so reading from and relying on
+	 * this state is discouraged.
+	 */
+	function routerReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	
+	  var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  var type = _ref.type;
+	  var payload = _ref.payload;
+	
+	  if (type === LOCATION_CHANGE) {
+	    return _extends({}, state, { locationBeforeTransitions: payload });
+	  }
+	
+	  return state;
+	}
+
+/***/ },
+/* 259 */
+/*!*********************************************!*\
+  !*** ./~/react-router-redux/lib/actions.js ***!
+  \*********************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * This action type will be dispatched by the history actions below.
+	 * If you're writing a middleware to watch for navigation events, be sure to
+	 * look for actions of this type.
+	 */
+	var CALL_HISTORY_METHOD = exports.CALL_HISTORY_METHOD = '@@router/CALL_HISTORY_METHOD';
+	
+	function updateLocation(method) {
+	  return function () {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    return {
+	      type: CALL_HISTORY_METHOD,
+	      payload: { method: method, args: args }
+	    };
+	  };
+	}
+	
+	/**
+	 * These actions correspond to the history API.
+	 * The associated routerMiddleware will capture these events before they get to
+	 * your reducer and reissue them as the matching function on your history.
+	 */
+	var push = exports.push = updateLocation('push');
+	var replace = exports.replace = updateLocation('replace');
+	var go = exports.go = updateLocation('go');
+	var goBack = exports.goBack = updateLocation('goBack');
+	var goForward = exports.goForward = updateLocation('goForward');
+	
+	var routerActions = exports.routerActions = { push: push, replace: replace, go: go, goBack: goBack, goForward: goForward };
+
+/***/ },
+/* 260 */
+/*!******************************************!*\
+  !*** ./~/react-router-redux/lib/sync.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports['default'] = syncHistoryWithStore;
+	
+	var _reducer = __webpack_require__(/*! ./reducer */ 258);
+	
+	var defaultSelectLocationState = function defaultSelectLocationState(state) {
+	  return state.routing;
+	};
+	
+	/**
+	 * This function synchronizes your history state with the Redux store.
+	 * Location changes flow from history to the store. An enhanced history is
+	 * returned with a listen method that responds to store updates for location.
+	 *
+	 * When this history is provided to the router, this means the location data
+	 * will flow like this:
+	 * history.push -> store.dispatch -> enhancedHistory.listen -> router
+	 * This ensures that when the store state changes due to a replay or other
+	 * event, the router will be updated appropriately and can transition to the
+	 * correct router state.
+	 */
+	function syncHistoryWithStore(history, store) {
+	  var _ref = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	  var _ref$selectLocationSt = _ref.selectLocationState;
+	  var selectLocationState = _ref$selectLocationSt === undefined ? defaultSelectLocationState : _ref$selectLocationSt;
+	  var _ref$adjustUrlOnRepla = _ref.adjustUrlOnReplay;
+	  var adjustUrlOnReplay = _ref$adjustUrlOnRepla === undefined ? true : _ref$adjustUrlOnRepla;
+	
+	  // Ensure that the reducer is mounted on the store and functioning properly.
+	  if (typeof selectLocationState(store.getState()) === 'undefined') {
+	    throw new Error('Expected the routing state to be available either as `state.routing` ' + 'or as the custom expression you can specify as `selectLocationState` ' + 'in the `syncHistoryWithStore()` options. ' + 'Ensure you have added the `routerReducer` to your store\'s ' + 'reducers via `combineReducers` or whatever method you use to isolate ' + 'your reducers.');
+	  }
+	
+	  var initialLocation = void 0;
+	  var isTimeTraveling = void 0;
+	  var unsubscribeFromStore = void 0;
+	  var unsubscribeFromHistory = void 0;
+	  var currentLocation = void 0;
+	
+	  // What does the store say about current location?
+	  var getLocationInStore = function getLocationInStore(useInitialIfEmpty) {
+	    var locationState = selectLocationState(store.getState());
+	    return locationState.locationBeforeTransitions || (useInitialIfEmpty ? initialLocation : undefined);
+	  };
+	
+	  // Init initialLocation with potential location in store
+	  initialLocation = getLocationInStore();
+	
+	  // If the store is replayed, update the URL in the browser to match.
+	  if (adjustUrlOnReplay) {
+	    var handleStoreChange = function handleStoreChange() {
+	      var locationInStore = getLocationInStore(true);
+	      if (currentLocation === locationInStore || initialLocation === locationInStore) {
+	        return;
+	      }
+	
+	      // Update address bar to reflect store state
+	      isTimeTraveling = true;
+	      currentLocation = locationInStore;
+	      history.transitionTo(_extends({}, locationInStore, {
+	        action: 'PUSH'
+	      }));
+	      isTimeTraveling = false;
+	    };
+	
+	    unsubscribeFromStore = store.subscribe(handleStoreChange);
+	    handleStoreChange();
+	  }
+	
+	  // Whenever location changes, dispatch an action to get it in the store
+	  var handleLocationChange = function handleLocationChange(location) {
+	    // ... unless we just caused that location change
+	    if (isTimeTraveling) {
+	      return;
+	    }
+	
+	    // Remember where we are
+	    currentLocation = location;
+	
+	    // Are we being called for the first time?
+	    if (!initialLocation) {
+	      // Remember as a fallback in case state is reset
+	      initialLocation = location;
+	
+	      // Respect persisted location, if any
+	      if (getLocationInStore()) {
+	        return;
+	      }
+	    }
+	
+	    // Tell the store to update by dispatching an action
+	    store.dispatch({
+	      type: _reducer.LOCATION_CHANGE,
+	      payload: location
+	    });
+	  };
+	  unsubscribeFromHistory = history.listen(handleLocationChange);
+	
+	  // The enhanced history uses store as source of truth
+	  return _extends({}, history, {
+	    // The listeners are subscribed to the store instead of history
+	    listen: function listen(listener) {
+	      // Copy of last location.
+	      var lastPublishedLocation = getLocationInStore(true);
+	
+	      // Keep track of whether we unsubscribed, as Redux store
+	      // only applies changes in subscriptions on next dispatch
+	      var unsubscribed = false;
+	      var unsubscribeFromStore = store.subscribe(function () {
+	        var currentLocation = getLocationInStore(true);
+	        if (currentLocation === lastPublishedLocation) {
+	          return;
+	        }
+	        lastPublishedLocation = currentLocation;
+	        if (!unsubscribed) {
+	          listener(lastPublishedLocation);
+	        }
+	      });
+	
+	      // History listeners expect a synchronous call. Make the first call to the
+	      // listener after subscribing to the store, in case the listener causes a
+	      // location change (e.g. when it redirects)
+	      listener(lastPublishedLocation);
+	
+	      // Let user unsubscribe later
+	      return function () {
+	        unsubscribed = true;
+	        unsubscribeFromStore();
+	      };
+	    },
+	
+	
+	    // It also provides a way to destroy internal listeners
+	    unsubscribe: function unsubscribe() {
+	      if (adjustUrlOnReplay) {
+	        unsubscribeFromStore();
+	      }
+	      unsubscribeFromHistory();
+	    }
+	  });
+	}
+
+/***/ },
+/* 261 */
+/*!************************************************!*\
+  !*** ./~/react-router-redux/lib/middleware.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports['default'] = routerMiddleware;
+	
+	var _actions = __webpack_require__(/*! ./actions */ 259);
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	/**
+	 * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
+	 * provided history object. This will prevent these actions from reaching your
+	 * reducer or any middleware that comes after this one.
+	 */
+	function routerMiddleware(history) {
+	  return function () {
+	    return function (next) {
+	      return function (action) {
+	        if (action.type !== _actions.CALL_HISTORY_METHOD) {
+	          return next(action);
+	        }
+	
+	        var _action$payload = action.payload;
+	        var method = _action$payload.method;
+	        var args = _action$payload.args;
+	
+	        history[method].apply(history, _toConsumableArray(args));
+	      };
+	    };
+	  };
+	}
+
+/***/ },
+/* 262 */
 /*!*******************************!*\
   !*** ./src/containers/app.js ***!
   \*******************************/
@@ -29384,11 +29765,11 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 235);
 	
-	var _header = __webpack_require__(/*! ../components/header.js */ 258);
+	var _header = __webpack_require__(/*! ../components/header */ 263);
 	
 	var _header2 = _interopRequireDefault(_header);
 	
-	var _footer = __webpack_require__(/*! ../components/footer.js */ 260);
+	var _footer = __webpack_require__(/*! ../components/footer */ 265);
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
@@ -29486,7 +29867,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App);
 
 /***/ },
-/* 258 */
+/* 263 */
 /*!**********************************!*\
   !*** ./src/components/header.js ***!
   \**********************************/
@@ -29506,7 +29887,7 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 172);
 	
-	var _menu = __webpack_require__(/*! ./menu.js */ 259);
+	var _menu = __webpack_require__(/*! ./menu.js */ 264);
 	
 	var _menu2 = _interopRequireDefault(_menu);
 	
@@ -29561,7 +29942,7 @@
 	exports.default = Header;
 
 /***/ },
-/* 259 */
+/* 264 */
 /*!********************************!*\
   !*** ./src/components/menu.js ***!
   \********************************/
@@ -29647,7 +30028,7 @@
 	exports.default = Menu;
 
 /***/ },
-/* 260 */
+/* 265 */
 /*!**********************************!*\
   !*** ./src/components/footer.js ***!
   \**********************************/
@@ -29699,7 +30080,7 @@
 	exports.default = Footer;
 
 /***/ },
-/* 261 */
+/* 266 */
 /*!****************************!*\
   !*** ./src/redux/store.js ***!
   \****************************/
@@ -29713,24 +30094,36 @@
 	
 	var _redux = __webpack_require__(/*! redux */ 242);
 	
-	var _reduxLogger = __webpack_require__(/*! redux-logger */ 262);
+	var _reduxLogger = __webpack_require__(/*! redux-logger */ 267);
 	
-	var _reduxThunk = __webpack_require__(/*! redux-thunk */ 268);
+	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
+	
+	var _reduxThunk = __webpack_require__(/*! redux-thunk */ 273);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _pageReducer = __webpack_require__(/*! ./pageReducer.js */ 269);
+	var _reduxPromiseMiddleware = __webpack_require__(/*! redux-promise-middleware */ 274);
+	
+	var _reduxPromiseMiddleware2 = _interopRequireDefault(_reduxPromiseMiddleware);
+	
+	var _reactRouterRedux = __webpack_require__(/*! react-router-redux */ 257);
+	
+	var _pageReducer = __webpack_require__(/*! ./pageReducer */ 276);
 	
 	var _pageReducer2 = _interopRequireDefault(_pageReducer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// TODO : remove logger when in production mode
+	var middlewares = [_reduxThunk2.default, (0, _reduxPromiseMiddleware2.default)(), (0, _reduxLogger2.default)()];
+	
 	exports.default = (0, _redux.createStore)((0, _redux.combineReducers)({
-		page: _pageReducer2.default
-	}), {}, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+		page: _pageReducer2.default,
+		routing: _reactRouterRedux.routerReducer
+	}), {}, _redux.applyMiddleware.apply(undefined, middlewares));
 
 /***/ },
-/* 262 */
+/* 267 */
 /*!*************************************!*\
   !*** ./~/redux-logger/lib/index.js ***!
   \*************************************/
@@ -29744,11 +30137,11 @@
 	  value: true
 	});
 	
-	var _core = __webpack_require__(/*! ./core */ 263);
+	var _core = __webpack_require__(/*! ./core */ 268);
 	
-	var _helpers = __webpack_require__(/*! ./helpers */ 264);
+	var _helpers = __webpack_require__(/*! ./helpers */ 269);
 	
-	var _defaults = __webpack_require__(/*! ./defaults */ 267);
+	var _defaults = __webpack_require__(/*! ./defaults */ 272);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
@@ -29851,7 +30244,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 263 */
+/* 268 */
 /*!************************************!*\
   !*** ./~/redux-logger/lib/core.js ***!
   \************************************/
@@ -29864,9 +30257,9 @@
 	});
 	exports.printBuffer = printBuffer;
 	
-	var _helpers = __webpack_require__(/*! ./helpers */ 264);
+	var _helpers = __webpack_require__(/*! ./helpers */ 269);
 	
-	var _diff = __webpack_require__(/*! ./diff */ 265);
+	var _diff = __webpack_require__(/*! ./diff */ 270);
 	
 	var _diff2 = _interopRequireDefault(_diff);
 	
@@ -29987,7 +30380,7 @@
 	}
 
 /***/ },
-/* 264 */
+/* 269 */
 /*!***************************************!*\
   !*** ./~/redux-logger/lib/helpers.js ***!
   \***************************************/
@@ -30014,7 +30407,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 265 */
+/* 270 */
 /*!************************************!*\
   !*** ./~/redux-logger/lib/diff.js ***!
   \************************************/
@@ -30027,7 +30420,7 @@
 	});
 	exports.default = diffLogger;
 	
-	var _deepDiff = __webpack_require__(/*! deep-diff */ 266);
+	var _deepDiff = __webpack_require__(/*! deep-diff */ 271);
 	
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 	
@@ -30113,7 +30506,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 266 */
+/* 271 */
 /*!******************************!*\
   !*** ./~/deep-diff/index.js ***!
   \******************************/
@@ -30545,7 +30938,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 267 */
+/* 272 */
 /*!****************************************!*\
   !*** ./~/redux-logger/lib/defaults.js ***!
   \****************************************/
@@ -30599,7 +30992,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 268 */
+/* 273 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/
@@ -30630,7 +31023,208 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 269 */
+/* 274 */
+/*!**************************************************!*\
+  !*** ./~/redux-promise-middleware/dist/index.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	exports.default = promiseMiddleware;
+	
+	var _isPromise = __webpack_require__(/*! ./isPromise */ 275);
+	
+	var _isPromise2 = _interopRequireDefault(_isPromise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
+	
+	/**
+	 * @function promiseMiddleware
+	 * @description
+	 * @returns {function} thunk
+	 */
+	function promiseMiddleware() {
+	  var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	  var promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
+	
+	  return function (ref) {
+	    var dispatch = ref.dispatch;
+	
+	
+	    return function (next) {
+	      return function (action) {
+	        if (action.payload) {
+	          if (!(0, _isPromise2.default)(action.payload) && !(0, _isPromise2.default)(action.payload.promise)) {
+	            return next(action);
+	          }
+	        } else {
+	          return next(action);
+	        }
+	
+	        // Deconstruct the properties of the original action object to constants
+	        var type = action.type;
+	        var payload = action.payload;
+	        var meta = action.meta;
+	
+	        // Assign values for promise type suffixes
+	
+	        var _promiseTypeSuffixes = _slicedToArray(promiseTypeSuffixes, 3);
+	
+	        var PENDING = _promiseTypeSuffixes[0];
+	        var FULFILLED = _promiseTypeSuffixes[1];
+	        var REJECTED = _promiseTypeSuffixes[2];
+	
+	        /**
+	         * @function getAction
+	         * @description Utility function for creating a rejected or fulfilled
+	         * flux standard action object.
+	         * @param {boolean} Is the action rejected?
+	         * @returns {object} action
+	         */
+	
+	        var getAction = function getAction(newPayload, isRejected) {
+	          return _extends({
+	            type: type + '_' + (isRejected ? REJECTED : FULFILLED)
+	          }, newPayload === null || typeof newPayload === 'undefined' ? {} : {
+	            payload: newPayload
+	          }, !!meta ? { meta: meta } : {}, isRejected ? {
+	            error: true
+	          } : {});
+	        };
+	
+	        /**
+	         * Assign values for promise and data variables. In the case the payload
+	         * is an object with a `promise` and `data` property, the values of those
+	         * properties will be used. In the case the payload is a promise, the
+	         * value of the payload will be used and data will be null.
+	         */
+	        var promise = void 0;
+	        var data = void 0;
+	
+	        if (!(0, _isPromise2.default)(action.payload) && _typeof(action.payload) === 'object') {
+	          promise = payload.promise;
+	          data = payload.data;
+	        } else {
+	          promise = payload;
+	          data = null;
+	        }
+	
+	        /**
+	         * First, dispatch the pending action. This flux standard action object
+	         * describes the pending state of a promise and will include any data
+	         * (for optimistic updates) and/or meta from the original action.
+	         */
+	        next(_extends({
+	          type: type + '_' + PENDING
+	        }, !!data ? { payload: data } : {}, !!meta ? { meta: meta } : {}));
+	
+	        /*
+	         * @function handleReject
+	         * @description Dispatch the rejected action and return
+	         * an error object. The error object is the original error
+	         * that was thrown. The user of the library is responsible for
+	         * best practices in ensure that they are throwing an Error object.
+	         * @params reason The reason the promise was rejected
+	         * @returns {object}
+	         */
+	        var handleReject = function handleReject(reason) {
+	          var rejectedAction = getAction(reason, true);
+	          dispatch(rejectedAction);
+	          throw reason;
+	        };
+	
+	        /*
+	         * @function handleFulfill
+	         * @description Dispatch the fulfilled action and
+	         * return the success object. The success object should
+	         * contain the value and the dispatched action.
+	         * @param value The value the promise was resloved with
+	         * @returns {object}
+	         */
+	        var handleFulfill = function handleFulfill() {
+	          var value = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	
+	          var resolvedAction = getAction(value, false);
+	          dispatch(resolvedAction);
+	
+	          return { value: value, action: resolvedAction };
+	        };
+	
+	        /**
+	         * Second, dispatch a rejected or fulfilled action. This flux standard
+	         * action object will describe the resolved state of the promise. In
+	         * the case of a rejected promise, it will include an `error` property.
+	         *
+	         * In order to allow proper chaining of actions using `then`, a new
+	         * promise is constructed and returned. This promise will resolve
+	         * with two properties: (1) the value (if fulfilled) or reason
+	         * (if rejected) and (2) the flux standard action.
+	         *
+	         * Rejected object:
+	         * {
+	         *   reason: ...
+	         *   action: {
+	         *     error: true,
+	         *     type: 'ACTION_REJECTED',
+	         *     payload: ...
+	         *   }
+	         * }
+	         *
+	         * Fulfilled object:
+	         * {
+	         *   value: ...
+	         *   action: {
+	         *     type: 'ACTION_FULFILLED',
+	         *     payload: ...
+	         *   }
+	         * }
+	         */
+	        return promise.then(handleFulfill, handleReject);
+	      };
+	    };
+	  };
+	}
+
+/***/ },
+/* 275 */
+/*!******************************************************!*\
+  !*** ./~/redux-promise-middleware/dist/isPromise.js ***!
+  \******************************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	exports.default = isPromise;
+	function isPromise(value) {
+	  if (value !== null && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+	    return value && typeof value.then === 'function';
+	  }
+	
+	  return false;
+	}
+
+/***/ },
+/* 276 */
 /*!**********************************!*\
   !*** ./src/redux/pageReducer.js ***!
   \**********************************/
@@ -30647,14 +31241,17 @@
 	var pageReducer = function pageReducer() {
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
 			loading: true,
+			currentSlug: '',
 			title: 'Page not found',
 			content: 'Page not found'
 		};
 		var action = arguments[1];
 	
 		switch (action.type) {
-			case "FETCH_PAGE":
-				state = _extends({}, state);
+			case "FETCH_PAGE_FULFILLED":
+				state = _extends({}, state, {
+					loading: false
+				}, action.payload);
 				break;
 		}
 	
@@ -30664,7 +31261,7 @@
 	exports.default = pageReducer;
 
 /***/ },
-/* 270 */
+/* 277 */
 /*!********************************!*\
   !*** ./src/components/home.js ***!
   \********************************/
@@ -30682,7 +31279,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDocumentTitle = __webpack_require__(/*! react-document-title */ 271);
+	var _reactDocumentTitle = __webpack_require__(/*! react-document-title */ 278);
 	
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 	
@@ -30738,7 +31335,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 271 */
+/* 278 */
 /*!*****************************************!*\
   !*** ./~/react-document-title/index.js ***!
   \*****************************************/
@@ -30747,7 +31344,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(/*! react */ 1),
-	    withSideEffect = __webpack_require__(/*! react-side-effect */ 272);
+	    withSideEffect = __webpack_require__(/*! react-side-effect */ 279);
 	
 	function reducePropsToState(propsList) {
 	  var innermostProps = propsList[propsList.length - 1];
@@ -30786,7 +31383,7 @@
 
 
 /***/ },
-/* 272 */
+/* 279 */
 /*!******************************************!*\
   !*** ./~/react-side-effect/lib/index.js ***!
   \******************************************/
@@ -30806,11 +31403,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _fbjsLibExecutionEnvironment = __webpack_require__(/*! fbjs/lib/ExecutionEnvironment */ 273);
+	var _fbjsLibExecutionEnvironment = __webpack_require__(/*! fbjs/lib/ExecutionEnvironment */ 280);
 	
 	var _fbjsLibExecutionEnvironment2 = _interopRequireDefault(_fbjsLibExecutionEnvironment);
 	
-	var _fbjsLibShallowEqual = __webpack_require__(/*! fbjs/lib/shallowEqual */ 274);
+	var _fbjsLibShallowEqual = __webpack_require__(/*! fbjs/lib/shallowEqual */ 281);
 	
 	var _fbjsLibShallowEqual2 = _interopRequireDefault(_fbjsLibShallowEqual);
 	
@@ -30918,7 +31515,7 @@
 	};
 
 /***/ },
-/* 273 */
+/* 280 */
 /*!****************************************************************!*\
   !*** ./~/react-side-effect/~/fbjs/lib/ExecutionEnvironment.js ***!
   \****************************************************************/
@@ -30962,7 +31559,7 @@
 	module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 274 */
+/* 281 */
 /*!********************************************************!*\
   !*** ./~/react-side-effect/~/fbjs/lib/shallowEqual.js ***!
   \********************************************************/
@@ -31020,7 +31617,7 @@
 	module.exports = shallowEqual;
 
 /***/ },
-/* 275 */
+/* 282 */
 /*!********************************!*\
   !*** ./src/components/page.js ***!
   \********************************/
@@ -31038,13 +31635,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDocumentTitle = __webpack_require__(/*! react-document-title */ 271);
+	var _reactDocumentTitle = __webpack_require__(/*! react-document-title */ 278);
 	
 	var _reactDocumentTitle2 = _interopRequireDefault(_reactDocumentTitle);
 	
-	var _pageActions = __webpack_require__(/*! ../redux/pageActions.js */ 276);
-	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 235);
+	
+	var _pageActions = __webpack_require__(/*! ../redux/pageActions */ 283);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31074,7 +31671,9 @@
 			value: function componentWillReceiveProps(nextProps) {
 				var postSlug = nextProps.params.postSlug != null ? nextProps.params.postSlug : '';
 	
-				//this.props.fetchPage(postSlug)
+				if (postSlug != this.props.page.slug && postSlug != '') {
+					this.props.fetchPage(postSlug);
+				}
 			}
 		}, {
 			key: 'componentDidMount',
@@ -31092,16 +31691,8 @@
 					_react2.default.createElement(
 						'section',
 						{ className: 'container' },
-						_react2.default.createElement(
-							'h1',
-							null,
-							'TITLE'
-						),
-						_react2.default.createElement(
-							'div',
-							null,
-							'Content'
-						)
+						_react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: this.props.page.title } }),
+						_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.page.content } })
 					)
 				);
 			}
@@ -31126,75 +31717,69 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Page);
 
 /***/ },
-/* 276 */
+/* 283 */
 /*!**********************************!*\
   !*** ./src/redux/pageActions.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-						value: true
+					value: true
 	});
 	exports.fetchPage = fetchPage;
 	
-	var _jquery = __webpack_require__(/*! jquery */ 277);
+	var _jquery = __webpack_require__(/*! jquery */ 284);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function fetchPage(slug) {
-						return function (dispatch) {
-											setTimeout(function () {
+					return {
+									type: "FETCH_PAGE",
+									payload: new Promise(function (resolve, reject) {
 	
-																if (slug != '') {
+													// Looking for id within routes
+													var id = 0;
+													for (var i = wp.routes.length - 1; i >= 0; i--) {
+																	if (wp.routes[i].slug == slug) {
+																					id = wp.routes[i].id;
+																					break;
+																	}
+													}
 	
-																					// Looking for id within routes
-																					var id = 0;
-																					for (var i = wp.routes.length - 1; i >= 0; i--) {
-																										if (wp.routes[i].slug == slug) {
-																															id = wp.routes[i].id;
-																															break;
-																										}
-																					}
+													//setTimeout( () => {
+													_jquery2.default.ajax({
+																	type: "GET",
+																	url: wp.root + "wp/v2/pages/" + id,
+																	success: function success(response) {
 	
-																					console.log("fetchPage : " + slug);
-	
-																					_jquery2.default.ajax({
-																										type: "GET",
-																										url: wp.root + "wp/v2/pages/" + id,
-																										success: function success(response) {
-	
-																															dispatch({
-																																				type: "FETCH_PAGE",
-																																				payload: {
-																																									loading: false,
-																																									title: response.title.rendered,
-																																									content: response.content.rendered
-																																				}
-																															});
-																										},
-																										error: function error() {
-	
-																															dispatch({
-																																				type: "FETCH_PAGE",
-																																				payload: {
-																																									loading: false,
-																																									title: 'Page not found',
-																																									content: 'Page not found'
-																																				}
-																															});
-																										}
+																					resolve({
+																									loading: false,
+																									title: response.title.rendered,
+																									content: response.content.rendered,
+																									slug: slug
 																					});
-																}
-											}, 2000);
-						};
+																	},
+																	error: function error() {
+	
+																					resolve({
+																									loading: false,
+																									title: 'Page not found',
+																									content: 'Page not found',
+																									slug: slug
+																					});
+																	}
+													});
+													//}, 2000);
+									})
+					};
 	}
 
 /***/ },
-/* 277 */
+/* 284 */
 /*!*********************************!*\
   !*** ./~/jquery/dist/jquery.js ***!
   \*********************************/

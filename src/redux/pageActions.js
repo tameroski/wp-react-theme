@@ -1,51 +1,45 @@
-import $ from 'jquery'
+import $ from 'jquery';
 
 export function fetchPage(slug){
-	return dispatch => {
-        setTimeout(() => {
+	return {
+        type: "FETCH_PAGE",
+        payload: new Promise((resolve, reject) => {
 
-			if (slug != ''){
+            // Looking for id within routes
+            var id = 0
+            for (var i = wp.routes.length - 1; i >= 0; i--) {
+                if (wp.routes[i].slug == slug){
+                    id = wp.routes[i].id
+                    break
+                }
+            }
 
-	            // Looking for id within routes
-	            var id = 0
-	            for (var i = wp.routes.length - 1; i >= 0; i--) {
-	                if (wp.routes[i].slug == slug){
-	                    id = wp.routes[i].id
-	                    break
-	                }
-	            }
-
-	            console.log("fetchPage : " + slug);
-
-	            $.ajax({
+            //setTimeout( () => {
+            	$.ajax({
 	                type: "GET",
 	                url: wp.root+"wp/v2/pages/"+id,
 	                success: function(response){
 
-						dispatch({
-							type: "FETCH_PAGE",
-							payload: {
-		                        loading: false,
-		                        title : response.title.rendered,
-		                        content : response.content.rendered
-		                    }
-						});
+						resolve({
+	                        loading: false,
+	                        title : response.title.rendered,
+	                        content : response.content.rendered,
+	                        slug: slug
+						})
 
 	                },
 	                error: function(){
 
-						dispatch({
-							type: "FETCH_PAGE",
-							payload: {
-		                        loading: false,
-		                        title : 'Page not found',
-		                        content : 'Page not found'
-		                    }
-						});
+						resolve({
+	                        loading: false,
+	                        title : 'Page not found',
+	                        content : 'Page not found',
+	                        slug: slug
+						})
 	                }
 	            });
-	        }
+            //}, 2000);
 
-		}, 2000);
-    }
+        })
+    };
 }

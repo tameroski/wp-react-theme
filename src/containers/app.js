@@ -1,9 +1,9 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import {connect} from 'react-redux';
 
 // Components
-import Header from '../components/header.js'
-import Footer from '../components/footer.js'
+import Header from '../components/header';
+import Footer from '../components/footer';
 
 class App extends React.Component {
 

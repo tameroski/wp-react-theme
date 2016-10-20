@@ -1,9 +1,8 @@
-import React from 'react'
-import DocumentTitle from 'react-document-title'
+import React from 'react';
+import DocumentTitle from 'react-document-title';
+import {connect} from 'react-redux';
 
-import { fetchPage } from "../redux/pageActions.js";
-
-import {connect} from 'react-redux'
+import { fetchPage } from "../redux/pageActions";
 
 class Page extends React.Component {
 
@@ -19,7 +18,9 @@ class Page extends React.Component {
 	componentWillReceiveProps(nextProps){
 		var postSlug = nextProps.params.postSlug != null ? nextProps.params.postSlug : ''
 
-		//this.props.fetchPage(postSlug)
+		if (postSlug != this.props.page.slug && postSlug != ''){
+			this.props.fetchPage(postSlug)
+		}
 	}
 
 	componentDidMount(){
@@ -31,24 +32,24 @@ class Page extends React.Component {
 	render(){
 
 		return (
-				<main>
-					<section className="container">
-						<h1>TITLE</h1>
-						<div>Content</div>
-					</section>
-				</main>
+			<main>
+				<section className="container">
+					<h1 dangerouslySetInnerHTML={{__html: this.props.page.title}}></h1>
+					<div dangerouslySetInnerHTML={{__html: this.props.page.content}}></div>
+				</section>
+			</main>
 		);
 	}
 }
 
-const mapStateToProps = function(state){
+const mapStateToProps = (state) => {
 	return {
 		page: state.page
 	}
 }
-const mapDispatchToProps = function(dispatch){
+const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchPage: function(slug){
+		fetchPage: (slug) => {
 			dispatch(fetchPage(slug));
 		}
 	}

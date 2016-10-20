@@ -24,3 +24,7 @@ Build for production
 * Listing posts
 * Isomorphic 
 * A lot more ...
+
+## Thanks
+
+[Mindspace](http://www.codechannels.com/channel/mindspace/) for the great tutorials 
