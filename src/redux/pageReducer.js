@@ -1,6 +1,6 @@
 const pageReducer = (state = {
 	loading: true,
-	currentSlug: '',
+	slug: '',
 	title: 'Page not found',
 	content: 'Page not found'
 }, action) => {
