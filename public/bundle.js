@@ -31241,7 +31241,7 @@
 	var pageReducer = function pageReducer() {
 		var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
 			loading: true,
-			currentSlug: '',
+			slug: '',
 			title: 'Page not found',
 			content: 'Page not found'
 		};
