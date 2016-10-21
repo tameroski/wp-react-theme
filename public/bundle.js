@@ -31675,13 +31675,17 @@
 			value: function render() {
 	
 				return _react2.default.createElement(
-					'main',
-					null,
+					_reactDocumentTitle2.default,
+					{ title: this.props.page.title },
 					_react2.default.createElement(
-						'section',
-						{ className: 'container' },
-						_react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: this.props.page.title } }),
-						_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.page.content } })
+						'main',
+						null,
+						_react2.default.createElement(
+							'section',
+							{ className: 'container' },
+							_react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: this.props.page.title } }),
+							_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.props.page.content } })
+						)
 					)
 				);
 			}

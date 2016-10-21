@@ -37,12 +37,14 @@ class Page extends React.Component {
 	render(){
 
 		return (
-			<main>
-				<section className="container">
-					<h1 dangerouslySetInnerHTML={{__html: this.props.page.title}}></h1>
-					<div dangerouslySetInnerHTML={{__html: this.props.page.content}}></div>
-				</section>
-			</main>
+			<DocumentTitle title={this.props.page.title}>
+				<main>
+					<section className="container">
+						<h1 dangerouslySetInnerHTML={{__html: this.props.page.title}}></h1>
+						<div dangerouslySetInnerHTML={{__html: this.props.page.content}}></div>
+					</section>
+				</main>
+			</DocumentTitle>
 		);
 	}
 }
