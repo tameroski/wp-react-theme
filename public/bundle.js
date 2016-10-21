@@ -29773,6 +29773,8 @@
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
+	var _pageActions = __webpack_require__(/*! ../redux/pageActions */ 283);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29782,6 +29784,9 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	// Components
+	
+	
+	// Actions
 	
 	
 	var App = function (_React$Component) {
@@ -29848,19 +29853,9 @@
 	};
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
-			fetchPage: function (_fetchPage) {
-				function fetchPage(_x) {
-					return _fetchPage.apply(this, arguments);
-				}
-	
-				fetchPage.toString = function () {
-					return _fetchPage.toString();
-				};
-	
-				return fetchPage;
-			}(function (slug) {
-				dispatch(fetchPage(slug));
-			})
+			fetchPage: function fetchPage(slug) {
+				dispatch((0, _pageActions.fetchPage)(slug));
+			}
 		};
 	};
 	
@@ -29887,7 +29882,7 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 172);
 	
-	var _menu = __webpack_require__(/*! ./menu.js */ 264);
+	var _menu = __webpack_require__(/*! ./menu */ 264);
 	
 	var _menu2 = _interopRequireDefault(_menu);
 	
@@ -29960,7 +29955,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	var _menuItem = __webpack_require__(/*! ./menuItem */ 285);
+	
+	var _menuItem2 = _interopRequireDefault(_menuItem);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29984,7 +29981,7 @@
 			value: function render() {
 	
 				var menuItems = this.props.menuItems.map(function (item) {
-					return _react2.default.createElement(MenuItem, { key: item.id, item: item });
+					return _react2.default.createElement(_menuItem2.default, { key: item.id, item: item });
 				});
 	
 				return _react2.default.createElement(
@@ -30000,29 +29997,6 @@
 		}]);
 	
 		return Menu;
-	}(_react2.default.Component);
-	
-	var MenuItem = function (_React$Component2) {
-		_inherits(MenuItem, _React$Component2);
-	
-		function MenuItem() {
-			_classCallCheck(this, MenuItem);
-	
-			return _possibleConstructorReturn(this, (MenuItem.__proto__ || Object.getPrototypeOf(MenuItem)).apply(this, arguments));
-		}
-	
-		_createClass(MenuItem, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'li',
-					null,
-					_react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.slug, dangerouslySetInnerHTML: { __html: this.props.item.title }, activeClassName: 'active' })
-				);
-			}
-		}]);
-	
-		return MenuItem;
 	}(_react2.default.Component);
 	
 	exports.default = Menu;
@@ -31254,6 +31228,13 @@
 				}, action.payload);
 				break;
 		}
+		switch (action.type) {
+			case "LOADING_PAGE":
+				state = _extends({}, state, {
+					loading: true
+				});
+				break;
+		}
 	
 		return state;
 	};
@@ -31651,6 +31632,9 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	// Actions
+	
+	
 	var Page = function (_React$Component) {
 		_inherits(Page, _React$Component);
 	
@@ -31667,11 +31651,16 @@
 				this.props.fetchPage(this.props.params.postSlug);
 			}
 		}, {
+			key: 'componentWillUpdate',
+			value: function componentWillUpdate(nextProps, nextState) {
+				//this.props.loading()
+			}
+		}, {
 			key: 'componentWillReceiveProps',
 			value: function componentWillReceiveProps(nextProps) {
 				var postSlug = nextProps.params.postSlug != null ? nextProps.params.postSlug : '';
 	
-				if (postSlug != this.props.page.slug && postSlug != '') {
+				if (postSlug != this.props.page.slug && postSlug != '' && !this.props.page.loading) {
 					this.props.fetchPage(postSlug);
 				}
 			}
@@ -31710,6 +31699,9 @@
 		return {
 			fetchPage: function fetchPage(slug) {
 				dispatch((0, _pageActions.fetchPage)(slug));
+			},
+			loading: function loading() {
+				dispatch((0, _pageActions.loading)());
 			}
 		};
 	};
@@ -31729,6 +31721,7 @@
 					value: true
 	});
 	exports.fetchPage = fetchPage;
+	exports.loading = loading;
 	
 	var _jquery = __webpack_require__(/*! jquery */ 284);
 	
@@ -31757,7 +31750,6 @@
 																	success: function success(response) {
 	
 																					resolve({
-																									loading: false,
 																									title: response.title.rendered,
 																									content: response.content.rendered,
 																									slug: slug
@@ -31766,7 +31758,6 @@
 																	error: function error() {
 	
 																					resolve({
-																									loading: false,
 																									title: 'Page not found',
 																									content: 'Page not found',
 																									slug: slug
@@ -31775,6 +31766,13 @@
 													});
 													//}, 2000);
 									})
+					};
+	}
+	
+	function loading() {
+					return {
+									type: "LOADING_PAGE",
+									payload: {}
 					};
 	}
 
@@ -42006,6 +42004,60 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 285 */
+/*!************************************!*\
+  !*** ./src/components/menuItem.js ***!
+  \************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 172);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var MenuItem = function (_React$Component) {
+	    _inherits(MenuItem, _React$Component);
+	
+	    function MenuItem() {
+	        _classCallCheck(this, MenuItem);
+	
+	        return _possibleConstructorReturn(this, (MenuItem.__proto__ || Object.getPrototypeOf(MenuItem)).apply(this, arguments));
+	    }
+	
+	    _createClass(MenuItem, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(_reactRouter.Link, { to: wp.base_path + this.props.item.slug, dangerouslySetInnerHTML: { __html: this.props.item.title }, activeClassName: 'active' })
+	            );
+	        }
+	    }]);
+	
+	    return MenuItem;
+	}(_react2.default.Component);
+	
+	exports.default = MenuItem;
 
 /***/ }
 /******/ ]);

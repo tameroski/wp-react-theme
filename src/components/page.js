@@ -2,7 +2,8 @@ import React from 'react';
 import DocumentTitle from 'react-document-title';
 import {connect} from 'react-redux';
 
-import { fetchPage } from "../redux/pageActions";
+// Actions
+import { fetchPage, loading } from "../redux/pageActions";
 
 class Page extends React.Component {
 
@@ -15,10 +16,14 @@ class Page extends React.Component {
 		this.props.fetchPage(this.props.params.postSlug)
 	}
 
+	componentWillUpdate(nextProps, nextState){
+		//this.props.loading()
+	}
+
 	componentWillReceiveProps(nextProps){
 		var postSlug = nextProps.params.postSlug != null ? nextProps.params.postSlug : ''
 
-		if (postSlug != this.props.page.slug && postSlug != ''){
+		if (postSlug != this.props.page.slug && postSlug != '' && !this.props.page.loading){
 			this.props.fetchPage(postSlug)
 		}
 	}
@@ -51,7 +56,10 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchPage: (slug) => {
 			dispatch(fetchPage(slug));
-		}
+		},
+		loading: () => {
+			dispatch(loading());
+		},
 	}
 }
 

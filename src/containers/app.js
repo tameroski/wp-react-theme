@@ -5,6 +5,9 @@ import {connect} from 'react-redux';
 import Header from '../components/header';
 import Footer from '../components/footer';
 
+// Actions
+import { fetchPage } from "../redux/pageActions";
+
 class App extends React.Component {
 
 	constructor(props) {

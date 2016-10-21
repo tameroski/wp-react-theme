@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
+
+import MenuItem from './menuItem';
 
 class Menu extends React.Component {
 	render(){
@@ -16,17 +17,6 @@ class Menu extends React.Component {
 			</nav>
 		);
 	}
-}
-
-class MenuItem extends React.Component {
-
-    render(){
-        return (
-        	<li>
-        		<Link to={wp.base_path + this.props.item.slug} dangerouslySetInnerHTML={{__html: this.props.item.title}} activeClassName="active"></Link>
-        	</li>
-        );
-    }
 }
 
 export default Menu;

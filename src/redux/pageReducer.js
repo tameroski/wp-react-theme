@@ -13,6 +13,14 @@ const pageReducer = (state = {
 	        };
 		break;
 	}
+	switch (action.type){
+		case "LOADING_PAGE":
+            state = {
+                ...state,
+                loading: true
+	        };
+		break;
+	}
 
     return state;
 };

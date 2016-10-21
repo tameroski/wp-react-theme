@@ -21,7 +21,6 @@ export function fetchPage(slug){
 	                success: function(response){
 
 						resolve({
-	                        loading: false,
 	                        title : response.title.rendered,
 	                        content : response.content.rendered,
 	                        slug: slug
@@ -31,7 +30,6 @@ export function fetchPage(slug){
 	                error: function(){
 
 						resolve({
-	                        loading: false,
 	                        title : 'Page not found',
 	                        content : 'Page not found',
 	                        slug: slug
@@ -41,5 +39,12 @@ export function fetchPage(slug){
             //}, 2000);
 
         })
+    };
+}
+
+export function loading(){
+	return {
+        type: "LOADING_PAGE",
+        payload: {}
     };
 }
